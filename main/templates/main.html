@@ -86,31 +86,59 @@
     <h5>Class:</h5>
     <p>{{ class }}</p>
 
+    <h5>You have {{ total_item }} items in your inventory</h5>
+
     <table>
         <tr>
             <th>Name</th>
             <th>Power</th>
             <th>Price</th>
             <th>Amount</th>
-            <th>Description</th>
-            <th>Date Added</th>
+            <th>Category</th>
         </tr>
 
         {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
 
         {% for item in items %}
             <tr>
-                <td>{{item.name}}</td>
-                <td>{{item.power}}</td>
-                <td>{{item.price}}</td>
-                <td>{{item.amount}}</td>
-                <td>{{item.description}}</td>
-                <td>{{item.date_added}}</td>
+                <td class="item_name">
+                    <button class="item_details" data-item-name="{{ item.name }}">
+                        {{ item.name }}
+                    </button>
+                </td>
+                <td class="item_power">{{ item.power }}</td>
+                <td class="item_price">{{ item.price }}</td>
+                <td class="item_amount">
+                    {{ item.amount }}               
+                </td>
+                <td class="item_category">{{ item.category }}</td>
             </tr>
         {% endfor %}
     </table>
 
     <br />
+
+    <div class="details-section">
+        {% for item in items %}
+            <div class="item-details-container" id="item-details-{{ item.name }}" style="display: none;">
+                <!-- Details content goes here -->
+                <h2>{{ item.name }}</h2>
+                <button class="add_amount" data-item-name="{{ item.name }}">
+                    Add Amount
+                </button>
+                <button class="dec_amount" data-item-name="{{ item.name }}">
+                    Drop Item
+                </button>
+                <button class="del_amount" data-item-name="{{ item.name }}">
+                    Delete Item
+                </button>
+                <p>{{ item.description }}</p>
+                <p>{{ item.amount }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <br/>
 
     <a href="{% url 'main:create_item' %}">
         <button>
@@ -126,6 +154,55 @@
 
     <h5>Sesi terakhir login: {{ last_login }}</h5>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const detailButtons = document.querySelectorAll(".item_details");
+            const detailsContainers = document.querySelectorAll(".item-details-container");
+
+            const addAmountButtons = document.querySelectorAll(".add_amount");
+
+            detailButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const itemName = button.getAttribute("data-item-name");
+                    detailsContainers.forEach(function (container) {
+                        if (container.id === `item-details-${itemName}`) {
+                            container.style.display = container.style.display === "none" ? "block" : "none";
+                        } else {
+                            container.style.display = "none";
+                        }
+                    });
+                });
+            });
+
+            addAmountButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const itemName = button.getAttribute("data-item-name");
+                    const csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
+
+                    fetch('/add_item_amount/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `csrfmiddlewaretoken=${csrfToken}&item_name=${itemName}`,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const amountElement = document.querySelector(`.item_amount[data-item-name="${itemName}"]`);
+                            amountElement.textContent = data.new_amount;
+                        } else {
+                            alert(data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            });
+
+        });
+    </script>
 </body>
 
 </html>

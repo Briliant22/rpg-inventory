@@ -9,5 +9,15 @@ class Item(models.Model):
     power = models.IntegerField()
     price = models.IntegerField()
     amount = models.IntegerField()
+    
+    CATEGORY_CHOICES = [
+        ("Weapons", "Weapons"),
+        ("Armors", "Armors"),
+        ("Consumables", "Consumables"),
+        ("Magic Items", "Magic Items"),
+        ("Miscellaneous", "Miscellaneous"),
+    ]
+
+    category = models.CharField(max_length=255, choices=CATEGORY_CHOICES)
     description = models.TextField()
-    date_added = models.DateField(auto_now_add=True)
+

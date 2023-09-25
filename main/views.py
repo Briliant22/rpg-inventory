@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from main.forms import ItemForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
@@ -20,6 +20,7 @@ def show_main(request):
         'name': request.user.username,
         'class': 'PBP C',
         'items' : items,
+        'total_item' : items.count,
         'last_login': request.COOKIES['last_login'],
     }
 
@@ -69,6 +70,24 @@ def create_item(request):
 
     context = {'form': form}
     return render(request, "create_item.html", context)
+
+def add_item_amount(request):
+    if request.method == "POST":
+        item_name = request.POST.get("item_name")
+        try:
+            item = Item.objects.get(name=item_name, user=request.user)
+            item.amount += 1
+            item.save()
+            return JsonResponse({"success": True, "new_amount": item.amount})
+        except Item.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Item not found"})
+    else:
+        return JsonResponse({"success": False, "error": "Invalid request method"})
+
+
+
+
+
 
 def show_xml(request):
     data = Item.objects.all()
