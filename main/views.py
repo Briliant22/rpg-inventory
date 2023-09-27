@@ -71,22 +71,34 @@ def create_item(request):
     context = {'form': form}
     return render(request, "create_item.html", context)
 
-def add_item_amount(request):
-    if request.method == "POST":
-        item_name = request.POST.get("item_name")
-        try:
-            item = Item.objects.get(name=item_name, user=request.user)
-            item.amount += 1
-            item.save()
-            return JsonResponse({"success": True, "new_amount": item.amount})
-        except Item.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Item not found"})
-    else:
-        return JsonResponse({"success": False, "error": "Invalid request method"})
+def add_item_amount(request, item_id):
+    # item = Item.objects.filter(id=item_id)
+    item = Item.objects.get(id=item_id, user=request.user)
+    item.amount += 1
+    item.save()
 
+    return redirect('main:show_main')
 
+def dec_item_amount(request, item_id):
+    # item = Item.objects.filter(id=item_id)
+    item = Item.objects.get(id=item_id, user=request.user)
+    item.amount -= 1
+    item.save()
 
+    return redirect('main:show_main')
 
+def remove_item(request, item_id):
+    # item = Item.objects.filter(id=item_id)
+    item = Item.objects.get(id=item_id, user=request.user)
+    item.delete()
+
+    return redirect('main:show_main')
+
+# def hapus(request, item_id):
+#     item = Item.objects.filter(id=item_id)
+#     item.delete()
+
+#     return redirect('main:show_main')
 
 
 def show_xml(request):

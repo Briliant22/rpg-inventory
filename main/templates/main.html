@@ -102,7 +102,7 @@
         {% for item in items %}
             <tr>
                 <td class="item_name">
-                    <button class="item_details" data-item-name="{{ item.name }}">
+                    <button class="item_details" data-item-id="{{ item.id }}">
                         {{ item.name }}
                     </button>
                 </td>
@@ -120,18 +120,27 @@
 
     <div class="details-section">
         {% for item in items %}
-            <div class="item-details-container" id="item-details-{{ item.name }}" style="display: none;">
+            <div class="item-details-container" id="item-details-{{ item.id }}" style="display: none;">
                 <!-- Details content goes here -->
                 <h2>{{ item.name }}</h2>
-                <button class="add_amount" data-item-name="{{ item.name }}">
-                    Add Amount
-                </button>
-                <button class="dec_amount" data-item-name="{{ item.name }}">
-                    Drop Item
-                </button>
-                <button class="del_amount" data-item-name="{{ item.name }}">
-                    Delete Item
-                </button>
+                <a href="{% url 'main:add_item_amount' item.id %}">
+                    <button class="add_amount" data-item-id="{{ item.id }}">
+                        Add Amount
+                    </button>
+                </a>
+
+                <a href="{% url 'main:dec_item_amount' item.id %}">
+                    <button class="dec_amount" data-item-id="{{ item.id }}">
+                        Drop Item
+                    </button>
+                </a>
+
+                <a href="{% url 'main:remove_item' item.id %}">
+                    <button class="del_amount" data-item-id="{{ item.id }}">
+                        Delete Item
+                    </button>
+                </a>
+
                 <p>{{ item.description }}</p>
                 <p>{{ item.amount }}</p>
             </div>
@@ -159,13 +168,11 @@
             const detailButtons = document.querySelectorAll(".item_details");
             const detailsContainers = document.querySelectorAll(".item-details-container");
 
-            const addAmountButtons = document.querySelectorAll(".add_amount");
-
             detailButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
-                    const itemName = button.getAttribute("data-item-name");
+                    const itemId = button.getAttribute("data-item-id");
                     detailsContainers.forEach(function (container) {
-                        if (container.id === `item-details-${itemName}`) {
+                        if (container.id === `item-details-${itemId}`) {
                             container.style.display = container.style.display === "none" ? "block" : "none";
                         } else {
                             container.style.display = "none";
@@ -173,37 +180,10 @@
                     });
                 });
             });
-
-            addAmountButtons.forEach(function (button) {
-                button.addEventListener("click", function () {
-                    const itemName = button.getAttribute("data-item-name");
-                    const csrfToken = document.querySelector("input[name=csrfmiddlewaretoken]").value;
-
-                    fetch('/add_item_amount/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: `csrfmiddlewaretoken=${csrfToken}&item_name=${itemName}`,
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const amountElement = document.querySelector(`.item_amount[data-item-name="${itemName}"]`);
-                            amountElement.textContent = data.new_amount;
-                        } else {
-                            alert(data.error);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                });
-            });
-
         });
     </script>
 </body>
 
 </html>
+
 {% endblock content %}
