@@ -72,7 +72,6 @@ def create_item(request):
     return render(request, "create_item.html", context)
 
 def add_item_amount(request, item_id):
-    # item = Item.objects.filter(id=item_id)
     item = Item.objects.get(id=item_id, user=request.user)
     item.amount += 1
     item.save()
@@ -80,26 +79,20 @@ def add_item_amount(request, item_id):
     return redirect('main:show_main')
 
 def dec_item_amount(request, item_id):
-    # item = Item.objects.filter(id=item_id)
     item = Item.objects.get(id=item_id, user=request.user)
-    item.amount -= 1
-    item.save()
-
+    if (item.amount == 1):
+        item.delete()
+    else:
+        item.amount -= 1
+        item.save()
+        
     return redirect('main:show_main')
 
 def remove_item(request, item_id):
-    # item = Item.objects.filter(id=item_id)
     item = Item.objects.get(id=item_id, user=request.user)
     item.delete()
 
     return redirect('main:show_main')
-
-# def hapus(request, item_id):
-#     item = Item.objects.filter(id=item_id)
-#     item.delete()
-
-#     return redirect('main:show_main')
-
 
 def show_xml(request):
     data = Item.objects.all()

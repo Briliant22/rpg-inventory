@@ -1,60 +1,138 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Character Inventory</title>
+{% block meta %}
 
+    <title>RPG Inventory</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2d2d2d;
+            background-color: #f5f5f5;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),
+                              url(https://i.pinimg.com/originals/82/74/72/827472c996956ff73ca44addd4ced98f.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             color: #fff;
             margin: 0;
             padding: 0;
         }
 
-        h1 {
-            background-color: #333;
+        nav, .navbar, .container-fluid {
+            background-color: #2d2d2d;
+        }
+
+        .navbar-brand {
+            color: #fff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: #fff;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #fff;
+        }
+
+        #total-item-details {
+            text-align: left;
+        }
+
+        .card h2 {
+            margin: 0 auto;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .player-details {
+            width: 1140px;
+            min-width: 550px;
+            min-height: 120px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: #fff;
+            color: #2d2d2d;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .player-details h5 {
+            margin: 10px;
+        }
+
+        .item-cards-container {
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center; 
+            margin: 20px 20px;
+        }
+
+        .item-card {
+            width: 550px;
+            min-width: 550px;
+            min-height: 300px;
+            margin: 20px;
             padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            background-color: #fff;
+            color: #2d2d2d;
+            font-size: 16px;
             text-align: center;
         }
 
-        h5 {
-            color: #ffcc00;
-            font-size: 1.2rem;
-            margin-top: 20px;
+        .item-card h2, .item-card p {
+            margin: 2px;
         }
 
-        p {
-            font-size: 1.2rem;
+        .item-card a {
+            display: block;
         }
 
-        table {
-            width: 100%;
+        .item-card h2 {
+            font-weight: bold;
+        }
+
+        .item-card button {
+            width: 140px;
+            margin: 0 auto;
+        }
+
+        .item-table {
+            width: 80%;
             border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
             margin-top: 20px;
+            border-radius: 10px;
         }
 
         th, td {
             padding: 12px 15px;
             text-align: left;
+            color: #2d2d2d;
         }
 
-        th {
-            background-color: #333;
-            color: #ffcc00;
+        .item-table th {
+            background-color: #e6e6e6;
         }
 
-        tr:nth-child(even) {
-            background-color: #444;
+        .item-table  tr:nth-child(even) {
+            background-color: #fff;
         }
 
-        tr:nth-child(odd) {
-            background-color: #333;
+        .item-table  tr:nth-child(odd) {
+            background-color: #e6e6e6;
+        }
+
+        .item-table tr:last-child {
+            font-weight: bold;
+            background-color: #fff;
+
         }
 
         a {
@@ -64,126 +142,160 @@
         }
 
         button {
-            background-color: #ffcc00;
-            color: #333;
+            background-color: #1a3891;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            color: #fff;
             padding: 10px 20px;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #ffdd33;
+            background-color: #2959e6;
         }
+
+        .bottom-button {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .cookie {
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .add-new-item {
+            width: 160px;
+        }
+
+        .logout {
+            width: 140px;
+        }
+
+        .item-stats {
+            margin: 0 auto;
+        }
+
+        .item-modifier {
+            margin: 0 auto;
+        }
+
     </style>
-</head>
 
-<body>
-    <h1>Character Inventory</h1>
+{% endblock meta %}
 
-    <h5>Name:</h5>
-    <p>{{ name }}</p>
+{% block content %}
 
-    <h5>Class:</h5>
-    <p>{{ class }}</p>
-
-    <h5>You have {{ total_item }} items in your inventory</h5>
-
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Power</th>
-            <th>Price</th>
-            <th>Amount</th>
-            <th>Category</th>
-        </tr>
-
-        {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini {% endcomment %}
-
-        {% for item in items %}
-            <tr>
-                <td class="item_name">
-                    <button class="item_details" data-item-id="{{ item.id }}">
-                        {{ item.name }}
-                    </button>
-                </td>
-                <td class="item_power">{{ item.power }}</td>
-                <td class="item_price">{{ item.price }}</td>
-                <td class="item_amount">
-                    {{ item.amount }}               
-                </td>
-                <td class="item_category">{{ item.category }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-
-    <br />
-
-    <div class="details-section">
-        {% for item in items %}
-            <div class="item-details-container" id="item-details-{{ item.id }}" style="display: none;">
-                <!-- Details content goes here -->
-                <h2>{{ item.name }}</h2>
-                <a href="{% url 'main:add_item_amount' item.id %}">
-                    <button class="add_amount" data-item-id="{{ item.id }}">
-                        Add Amount
-                    </button>
-                </a>
-
-                <a href="{% url 'main:dec_item_amount' item.id %}">
-                    <button class="dec_amount" data-item-id="{{ item.id }}">
-                        Drop Item
-                    </button>
-                </a>
-
-                <a href="{% url 'main:remove_item' item.id %}">
-                    <button class="del_amount" data-item-id="{{ item.id }}">
-                        Delete Item
-                    </button>
-                </a>
-
-                <p>{{ item.description }}</p>
-                <p>{{ item.amount }}</p>
-            </div>
-        {% endfor %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">RPG Inventory</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'main:logout' %}">
+                        <button class="logout">
+                            Logout
+                        </button>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
+</nav>
 
-    <br/>
+<div class="card player-details">
+    <h5>Name: {{ name }}</h5>
+    <h5>Class: {{ class }}</h5>
+    <h5 id="total-item-details">You have {{ total_item }} items in your inventory</h5>
+</div>
 
-    <a href="{% url 'main:create_item' %}">
-        <button>
-            Add New Item
-        </button>
-    </a>
+<br/>
 
-    <a href="{% url 'main:logout' %}">
-        <button>
-            Logout
-        </button>
-    </a>
+<div class="item-cards-container">
+    {% for item in items %}
+        <div class="item-card">
+            <h2>{{ item.name }}</h2>
+            <p>Category: {{ item.category }}</p>
+            <table class="item-stats">
+                <tr>
+                    <td>
+                        <p>Power: {{ item.power }}</p>
+                    </td>
+                    <td>
+                        <p>Price: {{ item.price }}</p>
+                    </td>
+                    <td>
+                        <p>Amount: {{ item.amount }}</p>
+                    </td>
+                </tr>
+            </table>
+            <p>{{ item.description }}</p>
+            <table class="item-modifier">
+                <tr>
+                    <td>
+                        <a href="{% url 'main:add_item_amount' item.id %}">
+                            <button class="add_amount" data-item-id="{{ item.id }}">
+                                Add Amount
+                            </button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'main:dec_item_amount' item.id %}">
+                            <button class="dec_amount" data-item-id="{{ item.id }}">
+                                Drop Item
+                            </button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'main:remove_item' item.id %}">
+                            <button class="del_amount" data-item-id="{{ item.id }}">
+                                Delete Item
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    {% endfor %}
+</div>
 
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
+<br/>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const detailButtons = document.querySelectorAll(".item_details");
-            const detailsContainers = document.querySelectorAll(".item-details-container");
+<table class="item-table">
+    <tr class="item-table-header">
+        <th>Name</th>
+        <th>Power</th>
+        <th>Price</th>
+        <th>Amount</th>
+        <th>Category</th>
+    </tr>
 
-            detailButtons.forEach(function (button) {
-                button.addEventListener("click", function () {
-                    const itemId = button.getAttribute("data-item-id");
-                    detailsContainers.forEach(function (container) {
-                        if (container.id === `item-details-${itemId}`) {
-                            container.style.display = container.style.display === "none" ? "block" : "none";
-                        } else {
-                            container.style.display = "none";
-                        }
-                    });
-                });
-            });
-        });
-    </script>
-</body>
+    {% for item in items %}
+        <tr class="item-table-elements">
+            <td class="item_name">{{ item.name }}</td>
+            <td class="item_power">{{ item.power }}</td>
+            <td class="item_price">{{ item.price }}</td>
+            <td class="item_amount">
+                {{ item.amount }}               
+            </td>
+            <td class="item_category">{{ item.category }}</td>
+        </tr>
+    {% endfor %}
+</table>
 
-</html>
+<br />
+
+<a class="bottom-button nav-link active" href="{% url 'main:create_item' %}">
+    <button class="add-new-item">
+        Add New Item
+    </button>
+</a>
+
+<h5 class="cookie">Sesi terakhir login: {{ last_login }}</h5>
 
 {% endblock content %}
