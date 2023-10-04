@@ -88,6 +88,10 @@
         margin: 2px;
     }
 
+    .stats-name {
+        font-weight: bold;
+    }
+
     .item-card a {
         display: block;
     }
@@ -165,11 +169,11 @@
     }
 
     .add-new-item {
-        width: 160px;
+        width: 150px;
     }
 
-    .logout {
-        width: 140px;
+    .home-page, .logout {
+        width: 150px;
     }
 
     .item-stats {
@@ -194,6 +198,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li>
+                    <a class="nav-link active" aria-current="page" href="{% url 'main:show_main' %}">
+                        <button class="home-page">
+                            Home
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link active" href="{% url 'main:create_item' %}">
+                        <button class="add-new-item">
+                            Add New Item
+                        </button>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'main:logout' %}">
                         <button class="logout">
@@ -209,7 +227,7 @@
 <div class="card player-details">
     <h5>Name: {{ name }}</h5>
     <h5>Class: {{ class }}</h5>
-    <h5 id="total-item-details">You have {{ total_item }} items in your inventory</h5>
+    <h5 class="stats-name" id="total-item-details">You have {{ total_item }} items in your inventory</h5>
 </div>
 
 <br/>
@@ -218,17 +236,17 @@
     {% for item in items %}
         <div class="item-card">
             <h2>{{ item.name }}</h2>
-            <p>Category: {{ item.category }}</p>
+            <p><span class="stats-name">Category:</span> {{ item.category }}</p>
             <table class="item-stats">
                 <tr>
                     <td>
-                        <p>Power: {{ item.power }}</p>
+                        <p><span class="stats-name">Power:</span> {{ item.power }}</p>
                     </td>
                     <td>
-                        <p>Price: {{ item.price }}</p>
+                        <p><span class="stats-name">Price:</span> {{ item.price }}</p>
                     </td>
                     <td>
-                        <p>Amount: {{ item.amount }}</p>
+                        <p><span class="stats-name">Amount:</span> {{ item.amount }}</p>
                     </td>
                 </tr>
             </table>

@@ -5,23 +5,131 @@
     body {
         font-family: 'Arial', sans-serif;
         background-color: #fff;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),
+        background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1)),
                             url(https://i.pinimg.com/originals/82/74/72/827472c996956ff73ca44addd4ced98f.png);
         color: #2d2d2d;
         margin: 0;
         padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
     }
+
+    h1 {
+        padding: 20px;
+        text-align: center;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    button {
+        background-color: #1a3891;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2959e6;
+    }
+
+    nav, .navbar, .container-fluid {
+        background-color: #2d2d2d;
+    }
+
+    .navbar-brand {
+        color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+        color: #fff;
+    }
+
+    .navbar-nav .nav-link.active {
+        color: #fff;
+    }
+
+    .navbar-toggler-icon {
+        background-color: #fff;
+    }
+
+    .card {
+        width: 500px;
+        min-width: 500px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        display: block;
+        margin: 0 auto;
+    }
+
+    input {
+        min-width: 343px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="submit"] {
+        width: 100px;
+        background-color: #1a3891;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-align: center;
+        margin: 5px 5px 5px -35px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #2959e6;
+    }
+
+
+    .home-page, .logout {
+        width: 140px;
+    }
+
 </Style>
 {% endblock meta %}
 
 {% block content %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">RPG Inventory</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li>
+                    <a class="nav-link active" aria-current="page" href="{% url 'main:show_main' %}">
+                        <button class="home-page">
+                            Home
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <a class="bottom-button nav-link active" href="{% url 'main:create_item' %}">
+                        <button class="add-new-item">
+                            Add New Item
+                        </button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'main:logout' %}">
+                        <button class="logout">
+                            Logout
+                        </button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <h1>Add New Item</h1>
 
-<form method="POST">
+<form class="card" method="POST">
     {% csrf_token %}
     <table>
         {{ form.as_table }}
