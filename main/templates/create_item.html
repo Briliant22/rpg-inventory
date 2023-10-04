@@ -1,5 +1,23 @@
 {% extends 'base.html' %} 
 
+{% block meta %}
+<Style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #fff;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),
+                            url(https://i.pinimg.com/originals/82/74/72/827472c996956ff73ca44addd4ced98f.png);
+        color: #2d2d2d;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+</Style>
+{% endblock meta %}
+
 {% block content %}
 <h1>Add New Item</h1>
 

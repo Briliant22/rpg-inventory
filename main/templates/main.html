@@ -3,184 +3,184 @@
 
 {% block meta %}
 
-    <title>RPG Inventory</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #2d2d2d;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),
-                              url(https://i.pinimg.com/originals/82/74/72/827472c996956ff73ca44addd4ced98f.png);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;
-        }
+<title>RPG Inventory</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #2d2d2d;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),
+                            url(https://i.pinimg.com/originals/82/74/72/827472c996956ff73ca44addd4ced98f.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+    }
 
-        nav, .navbar, .container-fluid {
-            background-color: #2d2d2d;
-        }
+    nav, .navbar, .container-fluid {
+        background-color: #2d2d2d;
+    }
 
-        .navbar-brand {
-            color: #fff;
-        }
+    .navbar-brand {
+        color: #fff;
+    }
 
-        .navbar-nav .nav-link {
-            color: #fff;
-        }
+    .navbar-nav .nav-link {
+        color: #fff;
+    }
 
-        .navbar-nav .nav-link.active {
-            color: #fff;
-        }
+    .navbar-nav .nav-link.active {
+        color: #fff;
+    }
 
-        .navbar-toggler-icon {
-            background-color: #fff;
-        }
+    .navbar-toggler-icon {
+        background-color: #fff;
+    }
 
-        #total-item-details {
-            text-align: left;
-        }
+    #total-item-details {
+        text-align: left;
+    }
 
-        .card h2 {
-            margin: 0 auto;
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+    .card h2 {
+        margin: 0 auto;
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 
-        .player-details {
-            width: 1140px;
-            min-width: 550px;
-            min-height: 120px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            background-color: #fff;
-            color: #2d2d2d;
-            display: block;
-            margin: 0 auto;
-        }
+    .player-details {
+        width: 1140px;
+        min-width: 550px;
+        min-height: 120px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        background-color: #fff;
+        color: #2d2d2d;
+        display: block;
+        margin: 0 auto;
+    }
 
-        .player-details h5 {
-            margin: 10px;
-        }
+    .player-details h5 {
+        margin: 10px;
+    }
 
-        .item-cards-container {
-            display: flex;
-            flex-wrap: wrap; 
-            justify-content: center; 
-            margin: 20px 20px;
-        }
+    .item-cards-container {
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: center; 
+        margin: 20px 20px;
+    }
 
-        .item-card {
-            width: 550px;
-            min-width: 550px;
-            min-height: 300px;
-            margin: 20px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            background-color: #fff;
-            color: #2d2d2d;
-            font-size: 16px;
-            text-align: center;
-        }
+    .item-card {
+        width: 550px;
+        min-width: 550px;
+        min-height: 300px;
+        margin: 20px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        border-radius: 5px;
+        background-color: #fff;
+        color: #2d2d2d;
+        font-size: 16px;
+        text-align: center;
+    }
 
-        .item-card h2, .item-card p {
-            margin: 2px;
-        }
+    .item-card h2, .item-card p {
+        margin: 2px;
+    }
 
-        .item-card a {
-            display: block;
-        }
+    .item-card a {
+        display: block;
+    }
 
-        .item-card h2 {
-            font-weight: bold;
-        }
+    .item-card h2 {
+        font-weight: bold;
+    }
 
-        .item-card button {
-            width: 140px;
-            margin: 0 auto;
-        }
+    .item-card button {
+        width: 140px;
+        margin: 0 auto;
+    }
 
-        .item-table {
-            width: 80%;
-            border-collapse: collapse;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            margin: 0 auto;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
+    .item-table {
+        width: 80%;
+        border-collapse: collapse;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        margin: 0 auto;
+        margin-top: 20px;
+        border-radius: 10px;
+    }
 
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            color: #2d2d2d;
-        }
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        color: #2d2d2d;
+    }
 
-        .item-table th {
-            background-color: #e6e6e6;
-        }
+    .item-table th {
+        background-color: #e6e6e6;
+    }
 
-        .item-table  tr:nth-child(even) {
-            background-color: #fff;
-        }
+    .item-table  tr:nth-child(even) {
+        background-color: #fff;
+    }
 
-        .item-table  tr:nth-child(odd) {
-            background-color: #e6e6e6;
-        }
+    .item-table  tr:nth-child(odd) {
+        background-color: #e6e6e6;
+    }
 
-        .item-table tr:last-child {
-            font-weight: bold;
-            background-color: #2959e6;
-        }
+    .item-table tr:last-child {
+        font-weight: bold;
+        background-color: #2959e6;
+    }
 
-        a {
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
+    a {
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
 
-        button {
-            background-color: #1a3891;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    button {
+        background-color: #1a3891;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #2959e6;
-        }
+    button:hover {
+        background-color: #2959e6;
+    }
 
-        .bottom-button {
-            margin: 20px auto;
-            text-align: center;
-        }
+    .bottom-button {
+        margin: 20px auto;
+        text-align: center;
+    }
 
-        .cookie {
-            text-align: center;
-            color: #fff;
-            font-weight: bold;
-        }
+    .cookie {
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+    }
 
-        .add-new-item {
-            width: 160px;
-        }
+    .add-new-item {
+        width: 160px;
+    }
 
-        .logout {
-            width: 140px;
-        }
+    .logout {
+        width: 140px;
+    }
 
-        .item-stats {
-            margin: 0 auto;
-        }
+    .item-stats {
+        margin: 0 auto;
+    }
 
-        .item-modifier {
-            margin: 0 auto;
-        }
+    .item-modifier {
+        margin: 0 auto;
+    }
 
-    </style>
+</style>
 
 {% endblock meta %}
 
