@@ -71,6 +71,10 @@
     .login_btn:hover {
         background-color: #2959e6;
     }
+
+    .no-account {
+        text-align: center;
+    }
 </style>
     
 {% endblock meta %}
@@ -109,7 +113,7 @@
         </ul>
     {% endif %}     
         
-    <p>Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a></p>
+    <p class="no-account">Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a></p>
 
 </div>
 
