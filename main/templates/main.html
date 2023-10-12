@@ -37,8 +37,12 @@
         background-color: #fff;
     }
 
+    .biodata {
+        color: #fff;
+    }
+
     #total-item-details {
-        text-align: left;
+        text-align: center;
     }
 
     .card h2 {
@@ -53,7 +57,9 @@
         min-width: 550px;
         min-height: 120px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        background-color: #fff;
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
         color: #2d2d2d;
         display: block;
         margin: 0 auto;
@@ -77,8 +83,9 @@
         margin: 20px;
         padding: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        border-radius: 5px;
-        background-color: #fff;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
         color: #2d2d2d;
         font-size: 16px;
         text-align: center;
@@ -117,24 +124,22 @@
     th, td {
         padding: 12px 15px;
         text-align: left;
-        color: #2d2d2d;
-    }
-
-    .item-table th {
-        background-color: #e6e6e6;
+        color: rgba(0, 0, 0, 1);
     }
 
     .item-table  tr:nth-child(even) {
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
     }
 
     .item-table  tr:nth-child(odd) {
-        background-color: #e6e6e6;
+        background-color: rgba(230, 230, 230, 0.3);
+        backdrop-filter: blur(10px);
     }
 
-    .item-table tr:last-child {
+    #total-item-details {
         font-weight: bold;
-        background-color: #2959e6;
+        background-color: rgba(41, 89, 230, 0.5);
     }
 
     a {
@@ -143,7 +148,7 @@
         margin-top: 20px;
     }
 
-    button {
+    button, .btn-primary {
         background-color: #1a3891;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         color: #fff;
@@ -153,23 +158,21 @@
         cursor: pointer;
     }
 
-    button:hover {
+    button:hover, .btn-primary:hover {
         background-color: #2959e6;
     }
 
-    .bottom-button {
+    .add-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 20px auto;
-        text-align: center;
     }
 
     .cookie {
         text-align: center;
         color: #fff;
         font-weight: bold;
-    }
-
-    .add-new-item {
-        width: 150px;
     }
 
     .home-page, .logout {
@@ -220,98 +223,190 @@
                     </a>
                 </li>
             </ul>
+            <div class="biodata">
+                <h5>Name: {{ name }}</h5>
+                <h5>Class: {{ class }}</h5>
+            </div>
         </div>
     </div>
 </nav>
 
-<div class="card player-details">
-    <h5>Name: {{ name }}</h5>
-    <h5>Class: {{ class }}</h5>
-    <h5 class="stats-name" id="total-item-details">You have {{ total_item }} items in your inventory</h5>
-</div>
+<br/>
+
+<div id="item_card" class="item-cards-container"></div>
 
 <br/>
 
-<div class="item-cards-container">
-    {% for item in items %}
-        <div class="item-card">
-            <h2>{{ item.name }}</h2>
-            <p><span class="stats-name">Category:</span> {{ item.category }}</p>
-            <table class="item-stats">
-                <tr>
-                    <td>
-                        <p><span class="stats-name">Power:</span> {{ item.power }}</p>
-                    </td>
-                    <td>
-                        <p><span class="stats-name">Price:</span> {{ item.price }}</p>
-                    </td>
-                    <td>
-                        <p><span class="stats-name">Amount:</span> {{ item.amount }}</p>
-                    </td>
-                </tr>
-            </table>
-            <p>{{ item.description }}</p>
-            <table class="item-modifier">
-                <tr>
-                    <td>
-                        <a href="{% url 'main:add_item_amount' item.id %}">
-                            <button class="add_amount" data-item-id="{{ item.id }}">
-                                Add Amount
-                            </button>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{% url 'main:dec_item_amount' item.id %}">
-                            <button class="dec_amount" data-item-id="{{ item.id }}">
-                                Drop Item
-                            </button>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{% url 'main:remove_item' item.id %}">
-                            <button class="del_amount" data-item-id="{{ item.id }}">
-                                Delete Item
-                            </button>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    {% endfor %}
-</div>
-
-<br/>
-
-<table class="item-table">
-    <tr class="item-table-header">
-        <th>Name</th>
-        <th>Power</th>
-        <th>Price</th>
-        <th>Amount</th>
-        <th>Category</th>
-    </tr>
-
-    {% for item in items %}
-        <tr class="item-table-elements">
-            <td class="item_name">{{ item.name }}</td>
-            <td class="item_power">{{ item.power }}</td>
-            <td class="item_price">{{ item.price }}</td>
-            <td class="item_amount">
-                {{ item.amount }}               
-            </td>
-            <td class="item_category">{{ item.category }}</td>
-        </tr>
-    {% endfor %}
-</table>
+<table id="item_table" class="item-table"></table>
 
 <br />
 
-<a class="bottom-button nav-link active" href="{% url 'main:create_item' %}">
-    <button class="add-new-item">
-        Add New Item
-    </button>
-</a>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="power" class="col-form-label">Power:</label>
+                        <input type="number" class="form-control" id="power" name="power"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="col-form-label">Category:</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="Weapons">Weapons</option>
+                            <option value="Armors">Armors</option>
+                            <option value="Consumables">Consumables</option>
+                            <option value="Magic Items">Magic Items</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="col-form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="col-form-label">Amount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Item</button>
 
 <h5 class="cookie">Sesi terakhir login: {{ last_login }}</h5>
+
+<script>
+    async function getItems() {
+        return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
+    }
+
+    async function refreshTable() {
+        const items = await getItems()
+        const itemTable = document.getElementById("item_table");
+
+        itemTable.innerHTML = "";
+
+        let total_items = 0;
+
+        items.forEach((item) => {total_items += item.fields.amount;})
+        let htmlString = `<tr>
+            <th class="stats-name" id="total-item-details" colspan="6">You have ${ total_items } items in your inventory</th>
+        </tr>\n
+        <tr class="item-table-header>
+            <th>Name</th>
+            <th>Power</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Edit</th>
+        </tr>`
+
+        items.forEach((item) => {
+            htmlString += `
+            \n<tr class="item-table-elements">
+                <td class="item_name">${item.fields.name}</td>
+                <td class="item_power">${item.fields.power}</td>
+                <td class="item_price">${item.fields.price}</td>
+                <td class="item_amount">${item.fields.amount}</td>
+                <td class="item_category">${item.fields.category}</td>
+                <td><button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button></a></td>
+            </tr>`
+        })
+
+        document.getElementById("item_table").innerHTML = htmlString
+    }
+
+    async function refreshCards() {
+        const items = await getItems();
+        const itemCardContainer = document.getElementById("item_card");
+
+        itemCardContainer.innerHTML = "";
+
+        items.forEach((item) => {
+            const itemCard = document.createElement("div");
+            itemCard.className = "item-card";
+            itemCard.innerHTML = `
+                <h2>${item.fields.name}</h2>
+                <p><span class="stats-name">Category:</span> ${item.fields.category}</p>
+                <!-- ... (other item card details) ... -->
+                <table class="item-stats">
+                    <tr>
+                        <td>
+                            <p><span class="stats-name">Power:</span>${item.fields.power}</p>
+                        </td>
+                        <td>
+                            <p><span class="stats-name">Price:</span>${item.fields.price}</p>
+                        </td>
+                        <td>
+                            <p><span class="stats-name">Amount:</span>${item.fields.amount}</p>
+                        </td>
+                    </tr>
+                </table>
+                <p>${item.fields.description}</p>
+                <table class="item-modifier">
+                    <tr>
+                        <td>
+                            <a href="add_item_amount/${item.pk}">
+                                <button class="add_amount" data-item-id="${item.pk}">
+                                    Add Amount
+                                </button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="dec_item_amount/${item.pk}">
+                                <button class="dec_amount" data-item-id="${item.pk}">
+                                    Drop Item
+                                </button>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="remove_item/${item.pk}">
+                                <button class="del_amount" data-item-id="${item.pk}">
+                                    Delete Item
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            `;
+            itemCardContainer.appendChild(itemCard);
+        });
+    }
+
+    refreshTable();
+    refreshCards();
+
+    function addItem() {
+        fetch("{% url 'main:add_item_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshItems)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addItem
+</script>
 
 {% endblock content %}

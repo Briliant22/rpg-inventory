@@ -23,7 +23,8 @@
         width: 50%;
         min-width: 400px;
         padding: 20px;
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
         border-radius: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         display: block;
@@ -45,7 +46,7 @@
         border-radius: 3px;
     }
 
-    input[type="submit"] {
+    input[type="submit"], .login {
         width: 72%;
         background-color: #1a3891;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -58,7 +59,7 @@
         margin: 5px 5px 5px 5px;
     }
 
-    input[type="submit"]:hover {
+    input[type="submit"]:hover, .login:hover {
         background-color: #2959e6;
     }
 
@@ -74,8 +75,15 @@
         margin-left: 15px;
     }
 
+    .back-to-login {
+        margin: 20px 0 20px 189px;
+        width:350px;
+    }
+
     .login {
-        margin-bottom: 20px;
+        width: 347px;
+        margin: 20px 0 20px 0;
+        text-align: center;
     }
 
     p {
@@ -100,8 +108,14 @@
                     <td></td>
                     <td><input type="submit" name="submit" value="Register"/></td>  
                 </tr>  
-            </table>  
+            </table>
         </form>
+
+        <a class="back-to-login" href="{% url 'main:login' %}">
+                <button class="login">
+                    Login
+                </button>
+        </a>
 
     {% if messages %}  
         <ul class="error-messages">   

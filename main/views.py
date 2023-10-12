@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect, JsonResponse
@@ -68,8 +69,35 @@ def create_item(request):
         item.save()
         return HttpResponseRedirect(reverse('main:show_main'))
 
-    context = {'form': form}
+    context = {
+        'form': form,
+        'name': request.user.username,
+        'class': 'PBP C',  
+    }
     return render(request, "create_item.html", context)
+
+def get_item_json(request):
+    product_item = Item.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_item_ajax(request):
+    if request.method == 'POST':
+
+        name = request.POST.get("name")
+        power = request.POST.get("power")
+        category = request.POST.get("category")
+        price = request.POST.get("price")
+        amount = request.POST.get("amount")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_item = Item(name=name, power=power, category=category, price=price, amount=amount, description=description, user=user)
+        new_item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
 
 def add_item_amount(request, item_id):
     item = Item.objects.get(id=item_id, user=request.user)
@@ -87,6 +115,18 @@ def dec_item_amount(request, item_id):
         item.save()
         
     return redirect('main:show_main')
+
+def edit_item(request, id):
+    product = Item.objects.get(pk = id)
+
+    form = ItemForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
 
 def remove_item(request, item_id):
     item = Item.objects.get(id=item_id, user=request.user)
