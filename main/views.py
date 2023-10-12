@@ -116,18 +116,6 @@ def dec_item_amount(request, item_id):
         
     return redirect('main:show_main')
 
-def edit_item(request, id):
-    product = Item.objects.get(pk = id)
-
-    form = ItemForm(request.POST or None, instance=product)
-
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
-
-    context = {'form': form}
-    return render(request, "edit_product.html", context)
-
 def remove_item(request, item_id):
     item = Item.objects.get(id=item_id, user=request.user)
     item.delete()

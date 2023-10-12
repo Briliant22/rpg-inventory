@@ -241,7 +241,7 @@
 
 <br />
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="createItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -291,7 +291,7 @@
     </div>
 </div>
 
-<button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Item</button>
+<button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#createItem">Add New Item</button>
 
 <h5 class="cookie">Sesi terakhir login: {{ last_login }}</h5>
 
@@ -329,7 +329,6 @@
                 <td class="item_price">${item.fields.price}</td>
                 <td class="item_amount">${item.fields.amount}</td>
                 <td class="item_category">${item.fields.category}</td>
-                <td><button type="button" class="btn btn-primary add-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button></a></td>
             </tr>`
         })
 
@@ -407,6 +406,7 @@
     }
 
     document.getElementById("button_add").onclick = addItem
+
 </script>
 
 {% endblock content %}
