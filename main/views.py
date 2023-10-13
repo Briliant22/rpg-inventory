@@ -4,13 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from main.forms import ItemForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.urls import reverse
 from main.models import Item
 import datetime
+import json
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -106,6 +107,17 @@ def add_item_amount(request, item_id):
 
     return redirect('main:show_main')
 
+@csrf_exempt
+def add_amount_ajax(request):
+    if request.method == 'PATCH':
+        pk = json.loads(request.body).get('pk')
+        item = Item.objects.get(pk=pk)
+        item.amount += 1
+        item.save()
+        return HttpResponse(b"ADDED", 201)
+    
+    return HttpResponseNotFound
+
 def dec_item_amount(request, item_id):
     item = Item.objects.get(id=item_id, user=request.user)
     if (item.amount == 1):
@@ -116,11 +128,32 @@ def dec_item_amount(request, item_id):
         
     return redirect('main:show_main')
 
+@csrf_exempt
+def dec_amount_ajax(request):
+    if request.method == 'PATCH':
+        pk = json.loads(request.body).get('pk')
+        item = Item.objects.get(pk=pk)
+        item.amount -= 1
+        item.save()
+        return HttpResponse(b"ADDED", 201)
+    
+    return HttpResponseNotFound
+
 def remove_item(request, item_id):
     item = Item.objects.get(id=item_id, user=request.user)
     item.delete()
 
     return redirect('main:show_main')
+
+@csrf_exempt
+def remove_item_ajax(request):
+    if request.method == 'DELETE':
+        pk = json.loads(request.body).get('pk')
+        item = Item.objects.get(pk=pk)
+        item.delete()
+        return HttpResponse(b"DELETED", 201)
+    
+    return HttpResponseNotFound()
 
 def show_xml(request):
     data = Item.objects.all()

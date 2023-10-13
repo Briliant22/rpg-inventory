@@ -285,7 +285,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal" onclick="addItem()">Create Item</button>
             </div>
         </div>
     </div>
@@ -364,22 +364,22 @@
                 <table class="item-modifier">
                     <tr>
                         <td>
-                            <a href="add_item_amount/${item.pk}">
-                                <button class="add_amount" data-item-id="${item.pk}">
+                            <a>
+                                <button class="add_amount" data-item-id="${item.pk}" onclick="addAmount(${item.pk})">
                                     Add Amount
                                 </button>
                             </a>
                         </td>
                         <td>
-                            <a href="dec_item_amount/${item.pk}">
-                                <button class="dec_amount" data-item-id="${item.pk}">
+                            <a>
+                                <button class="dec_amount" data-item-id="${item.pk}" onclick="decAmount(${item.pk})">
                                     Drop Item
                                 </button>
                             </a>
                         </td>
                         <td>
-                            <a href="remove_item/${item.pk}">
-                                <button class="del_amount" data-item-id="${item.pk}">
+                            <a>
+                                <button class="del_amount" data-item-id="${item.pk}" onclick="removeItem(${item.pk})">
                                     Delete Item
                                 </button>
                             </a>
@@ -398,13 +398,38 @@
         fetch("{% url 'main:add_item_ajax' %}", {
             method: "POST",
             body: new FormData(document.querySelector('#form'))
-        }).then(refreshItems)
+        }).then(refreshCards).then(refreshTable)
 
         document.getElementById("form").reset()
         return false
     }
 
-    document.getElementById("button_add").onclick = addItem
+    function removeItem(pk) {
+        fetch("{% url 'main:remove_item_ajax' %}", {
+            method: 'DELETE',
+            body: JSON.stringify({
+                'pk': pk
+            })
+        }).then(refreshCards).then(refreshTable)
+    }
+
+    function addAmount(pk) {
+        fetch("{% url 'main:add_amount_ajax' %}", {
+            method: 'PATCH',
+            body: JSON.stringify({
+                'pk': pk
+            })
+        }).then(refreshCards).then(refreshTable)
+    }
+
+    function decAmount(pk) {
+        fetch("{% url 'main:dec_amount_ajax' %}", {
+            method: 'PATCH',
+            body: JSON.stringify({
+                'pk': pk
+            })
+        }).then(refreshCards).then(refreshTable)
+    }
 
 </script>
 
