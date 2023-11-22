@@ -20,5 +20,6 @@ urlpatterns = [
     path('json/', show_json, name='show_json'),
     path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
     path('json/<int:id>/', show_json_by_id, name='show_json_by_id'),
-    path('remove_item_ajax/', remove_item_ajax, name="remove_item_ajax")
+    path('remove_item_ajax/', remove_item_ajax, name="remove_item_ajax"),
+    path('create-flutter/', create_product_flutter, name='create_product_flutter'),
 ]
